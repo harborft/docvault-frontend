@@ -26,46 +26,48 @@ export default function Layout() {
   ];
 
   return (
-    <div style={s.shell}>
-      <aside style={s.sidebar}>
-        <div style={s.logo}>
-          <div style={s.brand}>DocVault</div>
-          <div style={s.sub}>Fractional Finance Portal</div>
+    <div style={styles.shell}>
+      <aside style={styles.sidebar}>
+        <div style={styles.logo}>
+          <div style={styles.brand}>DocVault</div>
+          <div style={styles.sub}>Fractional Finance Portal</div>
         </div>
-        <nav style={s.nav}>
+        <nav style={styles.nav}>
           {nav.map(item => (
             <NavLink
               key={item.to}
               to={item.to}
-              style={({ isActive }) => ({ ...s.navItem, ...(isActive ? s.navActive : {}) })}
+              style={({ isActive }) => ({ ...styles.navItem, ...(isActive ? styles.navActive : {}) })}
             >
               <span style={{ fontSize: 14 }}>{item.icon}</span>
               {item.label}
               {item.badge && unread > 0 && (
-                <span style={s.badge}>{unread}</span>
+                <span style={styles.badge}>{unread}</span>
               )}
             </NavLink>
           ))}
         </nav>
-        <div style={s.user}>
-          <div style={s.avatar}>
+        <div style={styles.user}>
+          <div style={styles.avatar}>
             {profile?.full_name?.slice(0, 2).toUpperCase() || 'AD'}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={s.userName}>{profile?.full_name || 'Admin'}</div>
-            <div style={s.userRole}>CFO Partner · Admin</div>
+            <div style={styles.userName}>{profile?.full_name || 'Admin'}</div>
+            <div style={styles.userRole}>
+              {{ owner: 'CFO Partner · Owner', manager: 'Manager', staff_accountant: 'Staff Accountant', readonly_reviewer: 'Reviewer' }[profile?.role] || profile?.role || 'User'}
+            </div>
           </div>
-          <button onClick={handleSignOut} style={s.signOut} title="Sign out">⏻</button>
+          <button onClick={handleSignOut} style={styles.signOut} title="Sign out">⏻</button>
         </div>
       </aside>
-      <main style={s.main}>
+      <main style={styles.main}>
         <Outlet />
       </main>
     </div>
   );
 }
 
-const s = {
+const styles = {
   shell:    { display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: 'system-ui, sans-serif' },
   sidebar:  { width: 210, background: '#0D1B2A', display: 'flex', flexDirection: 'column', flexShrink: 0 },
   logo:     { padding: '18px 16px 14px', borderBottom: '1px solid rgba(255,255,255,.08)' },

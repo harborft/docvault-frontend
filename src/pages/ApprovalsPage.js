@@ -51,60 +51,60 @@ export default function ApprovalsPage() {
   }
 
   return (
-    <div style={s.page}>
-      <div style={s.title}>Approval Queue</div>
+    <div style={styles.page}>
+      <div style={styles.title}>Approval Queue</div>
       {stats && (
-        <div style={s.statsRow}>
+        <div style={styles.statsRow}>
           {[
             { l: 'Pending',  v: stats.pending,  c: '#A32D2D' },
             { l: 'Approved', v: stats.approved, c: '#27500A' },
             { l: 'Flagged',  v: stats.flagged,  c: '#8A5C00' },
             { l: 'Total',    v: stats.total,    c: '#0D1B2A' },
           ].map(x => (
-            <div key={x.l} style={s.statCard}>
-              <div style={s.statLabel}>{x.l}</div>
-              <div style={{ ...s.statVal, color: x.c }}>{x.v}</div>
+            <div key={x.l} style={styles.statCard}>
+              <div style={styles.statLabel}>{x.l}</div>
+              <div style={{ ...styles.statVal, color: x.c }}>{x.v}</div>
             </div>
           ))}
         </div>
       )}
 
-      <div style={s.layout}>
+      <div style={styles.layout}>
         <div>
-          {loading && <div style={s.empty}>Loading…</div>}
-          {!loading && docs.length === 0 && <div style={s.empty}>🎉 All caught up — no pending documents!</div>}
+          {loading && <div style={styles.empty}>Loading…</div>}
+          {!loading && docs.length === 0 && <div style={styles.empty}>🎉 All caught up — no pending documents!</div>}
           {docs.map(doc => (
-            <div key={doc.id} style={{ ...s.card, ...(doc.status === 'flagged' ? s.cardFlagged : {}) }}>
-              <div style={s.cardHead}>
-                <div style={s.docIcon}>📄</div>
+            <div key={doc.id} style={{ ...styles.card, ...(doc.status === 'flagged' ? styles.cardFlagged : {}) }}>
+              <div style={styles.cardHead}>
+                <div style={styles.docIcon}>📄</div>
                 <div style={{ flex: 1 }}>
-                  <div style={s.docName}>{doc.original_name}</div>
-                  <div style={s.docInfo}>
+                  <div style={styles.docName}>{doc.original_name}</div>
+                  <div style={styles.docInfo}>
                     {doc.clients?.name} · {Math.round(doc.file_size / 1024)} KB ·{' '}
                     {formatDistanceToNow(new Date(doc.created_at), { addSuffix: true })}
                     {doc.upload_source === 'mobile_scan' ? ' · 📷 scan' : ''}
                     {doc.page_count ? ` · ${doc.page_count} pages` : ''}
                   </div>
                 </div>
-                <span style={{ ...s.pill, ...pillStyle(doc.status) }}>{doc.status}</span>
+                <span style={{ ...styles.pill, ...pillStyle(doc.status) }}>{doc.status}</span>
               </div>
 
               {doc.review_note && (
-                <div style={s.existingNote}>💬 {doc.review_note}</div>
+                <div style={styles.existingNote}>💬 {doc.review_note}</div>
               )}
 
               <input
-                style={s.noteInput}
+                style={styles.noteInput}
                 placeholder="Add a review note (optional)"
                 value={note[doc.id] || ''}
                 onChange={e => setNote(n => ({ ...n, [doc.id]: e.target.value }))}
               />
 
-              <div style={s.btnRow}>
-                <button style={s.btnApprove} onClick={() => action(doc.id, 'approved')}>✓ Approve</button>
-                <button style={s.btnReview}  onClick={() => action(doc.id, 'in_review')}>👁 Mark In Review</button>
-                <button style={s.btnFlag}    onClick={() => action(doc.id, 'flagged')}>⚑ Flag Issue</button>
-                <button style={s.btnArchive} onClick={() => action(doc.id, 'archived')}>Archive</button>
+              <div style={styles.btnRow}>
+                <button style={styles.btnApprove} onClick={() => action(doc.id, 'approved')}>✓ Approve</button>
+                <button style={styles.btnReview}  onClick={() => action(doc.id, 'in_review')}>👁 Mark In Review</button>
+                <button style={styles.btnFlag}    onClick={() => action(doc.id, 'flagged')}>⚑ Flag Issue</button>
+                <button style={styles.btnArchive} onClick={() => action(doc.id, 'archived')}>Archive</button>
               </div>
             </div>
           ))}
@@ -112,27 +112,27 @@ export default function ApprovalsPage() {
 
         {/* Request form */}
         <div>
-          <div style={s.card}>
-            <div style={s.sectionTitle}>Request a Document</div>
-            <div style={s.hint}>Send a request to a client — they'll receive a push notification and see it in their portal.</div>
+          <div style={styles.card}>
+            <div style={styles.sectionTitle}>Request a Document</div>
+            <div style={styles.hint}>Send a request to a client — they'll receive a push notification and see it in their portal.</div>
             <form onSubmit={sendRequest}>
-              <label style={s.label}>Client</label>
-              <select style={s.input} required value={reqForm.client_id}
+              <label style={styles.label}>Client</label>
+              <select style={styles.input} required value={reqForm.client_id}
                 onChange={e => setReqForm(f => ({ ...f, client_id: e.target.value }))}>
                 <option value="">Select client…</option>
                 {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
-              <label style={s.label}>Document needed</label>
-              <input style={s.input} required placeholder="e.g. March bank statement"
+              <label style={styles.label}>Document needed</label>
+              <input style={styles.input} required placeholder="e.g. March bank statement"
                 value={reqForm.title} onChange={e => setReqForm(f => ({ ...f, title: e.target.value }))} />
-              <label style={s.label}>Details (optional)</label>
-              <textarea style={{ ...s.input, height: 70, resize: 'none' }}
+              <label style={styles.label}>Details (optional)</label>
+              <textarea style={{ ...styles.input, height: 70, resize: 'none' }}
                 placeholder="Any additional context…"
                 value={reqForm.description} onChange={e => setReqForm(f => ({ ...f, description: e.target.value }))} />
-              <label style={s.label}>Due date</label>
-              <input style={s.input} type="date" value={reqForm.due_date}
+              <label style={styles.label}>Due date</label>
+              <input style={styles.input} type="date" value={reqForm.due_date}
                 onChange={e => setReqForm(f => ({ ...f, due_date: e.target.value }))} />
-              <button style={s.btnSend} type="submit" disabled={sending}>
+              <button style={styles.btnSend} type="submit" disabled={sending}>
                 {sending ? 'Sending…' : 'Send Request + Notify Client'}
               </button>
             </form>
@@ -153,7 +153,7 @@ function pillStyle(status) {
   return m[status] || m.pending;
 }
 
-const s = {
+const styles = {
   page:        { padding: '24px 26px' },
   title:       { fontSize: 18, fontWeight: 700, color: '#0D1B2A', marginBottom: 16 },
   statsRow:    { display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 },

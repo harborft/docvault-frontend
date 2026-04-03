@@ -105,12 +105,12 @@ export default function DocumentsPage() {
   }
 
   return (
-    <div style={s.page}>
+    <div style={styles.page}>
       {/* Header */}
-      <div style={s.header}>
-        <div style={s.title}>Documents</div>
+      <div style={styles.header}>
+        <div style={styles.title}>Documents</div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <select style={s.select} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+          <select style={styles.select} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
             <option value="">All statuses</option>
             <option value="pending">Awaiting Review</option>
             <option value="approved">Approved</option>
@@ -120,22 +120,22 @@ export default function DocumentsPage() {
         </div>
       </div>
 
-      <div style={s.layout}>
+      <div style={styles.layout}>
         {/* Folder tree */}
-        <div style={s.sidebar}>
-          <div style={s.sideTitle}>Folders</div>
+        <div style={styles.sidebar}>
+          <div style={styles.sideTitle}>Folders</div>
           <div
-            style={{ ...s.folderItem, ...(selectedClient === null ? s.folderSel : {}) }}
+            style={{ ...styles.folderItem, ...(selectedClient === null ? styles.folderSel : {}) }}
             onClick={() => { setSelectedClient(null); setSelectedFolder(null); }}
           >
             📁 All Documents
-            <span style={s.folderBadge}>{documents.length}</span>
+            <span style={styles.folderBadge}>{documents.length}</span>
           </div>
 
           {isAdmin && clients.map(client => (
             <React.Fragment key={client.id}>
               <div
-                style={{ ...s.folderItem, ...(selectedClient === client.id && !selectedFolder ? s.folderSel : {}) }}
+                style={{ ...styles.folderItem, ...(selectedClient === client.id && !selectedFolder ? styles.folderSel : {}) }}
                 onClick={() => { setSelectedClient(client.id); setSelectedFolder(null); }}
               >
                 📂 {client.name}
@@ -143,8 +143,8 @@ export default function DocumentsPage() {
               {selectedClient === client.id && folders.map(folder => (
                 <div
                   key={folder.id}
-                  style={{ ...s.folderItem, paddingLeft: 28, fontSize: 12,
-                    ...(selectedFolder === folder.id ? s.folderSel : {}) }}
+                  style={{ ...styles.folderItem, paddingLeft: 28, fontSize: 12,
+                    ...(selectedFolder === folder.id ? styles.folderSel : {}) }}
                   onClick={() => setSelectedFolder(folder.id)}
                 >
                   📄 {folder.name}
@@ -157,45 +157,45 @@ export default function DocumentsPage() {
         {/* Main doc area */}
         <div style={{ flex: 1, minWidth: 0 }}>
           {/* Upload zone */}
-          <div {...getRootProps()} style={{ ...s.dropzone, ...(isDragActive ? s.dropActive : {}) }}>
+          <div {...getRootProps()} style={{ ...styles.dropzone, ...(isDragActive ? styles.dropActive : {}) }}>
             <input {...getInputProps()} />
             <div style={{ fontSize: 28, marginBottom: 8 }}>☁️</div>
-            <div style={s.dzTitle}>
+            <div style={styles.dzTitle}>
               {uploading ? 'Uploading…' : isDragActive ? 'Drop files here!' : 'Drop files here or click to upload'}
             </div>
-            <div style={s.dzHint}>PDF, JPG, PNG, XLSX · Max 100 MB · Encrypted in transit and at rest</div>
+            <div style={styles.dzHint}>PDF, JPG, PNG, XLSX · Max 100 MB · Encrypted in transit and at rest</div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 12 }}>
-              <button style={s.btnDark} disabled={uploading}>
+              <button style={styles.btnDark} disabled={uploading}>
                 {uploading ? 'Uploading…' : 'Browse Files'}
               </button>
             </div>
           </div>
 
           {/* Security notice */}
-          <div style={s.secBar}>
+          <div style={styles.secBar}>
             🔒 All files encrypted with AES-256 · Access logged · Signed URLs expire in 5 minutes
           </div>
 
           {/* Document list */}
           {loading ? (
-            <div style={s.empty}>Loading documents…</div>
+            <div style={styles.empty}>Loading documents…</div>
           ) : documents.length === 0 ? (
-            <div style={s.empty}>No documents found. Upload your first file above.</div>
+            <div style={styles.empty}>No documents found. Upload your first file above.</div>
           ) : (
             documents.map(doc => {
               const pill = STATUS_PILL[doc.status] || STATUS_PILL.pending;
               return (
-                <div key={doc.id} style={s.docRow}>
-                  <div style={{ ...s.docIcon,
+                <div key={doc.id} style={styles.docRow}>
+                  <div style={{ ...styles.docIcon,
                     background: doc.file_type === 'pdf' ? '#FEE8E8' :
                                 doc.file_type?.includes('xl') || doc.file_type === 'csv' ? '#E8F5EE' : '#E8EEF9'
                   }}>
                     {doc.file_type === 'pdf' ? '📄' : doc.file_type?.includes('xl') ? '📊' : '🖼'}
                   </div>
 
-                  <div style={s.docMeta}>
-                    <div style={s.docName}>{doc.original_name}</div>
-                    <div style={s.docInfo}>
+                  <div style={styles.docMeta}>
+                    <div style={styles.docName}>{doc.original_name}</div>
+                    <div style={styles.docInfo}>
                       {doc.clients?.name && <><strong>{doc.clients.name}</strong> · </>}
                       {doc.folders?.name && <>{doc.folders.name} · </>}
                       {Math.round(doc.file_size / 1024)} KB ·{' '}
@@ -204,18 +204,18 @@ export default function DocumentsPage() {
                     </div>
                   </div>
 
-                  <span style={{ ...s.pill, background: pill.bg, color: pill.color }}>
+                  <span style={{ ...styles.pill, background: pill.bg, color: pill.color }}>
                     {pill.label}
                   </span>
 
-                  <div style={s.actions}>
-                    <button style={s.actionBtn} onClick={() => handleDownload(doc)} title="Download">⬇</button>
+                  <div style={styles.actions}>
+                    <button style={styles.actionBtn} onClick={() => handleDownload(doc)} title="Download">⬇</button>
                     {isAdmin && doc.status !== 'approved' && (
-                      <button style={{ ...s.actionBtn, color: '#27500A' }}
+                      <button style={{ ...styles.actionBtn, color: '#27500A' }}
                         onClick={() => handleStatusChange(doc.id, 'approved')} title="Approve">✓</button>
                     )}
                     {isAdmin && doc.status !== 'flagged' && (
-                      <button style={{ ...s.actionBtn, color: '#A32D2D' }}
+                      <button style={{ ...styles.actionBtn, color: '#A32D2D' }}
                         onClick={() => handleStatusChange(doc.id, 'flagged')} title="Flag">⚑</button>
                     )}
                   </div>
@@ -229,7 +229,7 @@ export default function DocumentsPage() {
   );
 }
 
-const s = {
+const styles = {
   page:       { padding: '24px 26px' },
   header:     { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 },
   title:      { fontSize: 18, fontWeight: 700, color: '#0D1B2A' },

@@ -34,21 +34,21 @@ export default function AuditPage() {
   }
 
   return (
-    <div style={s.page}>
-      <div style={s.header}>
+    <div style={styles.page}>
+      <div style={styles.header}>
         <div>
-          <div style={s.title}>Audit Log</div>
-          <div style={s.sub}>Every upload, view, download, and approval — permanently recorded.</div>
+          <div style={styles.title}>Audit Log</div>
+          <div style={styles.sub}>Every upload, view, download, and approval — permanently recorded.</div>
         </div>
-        <select style={s.select}
+        <select style={styles.select}
           onChange={e => { setFilter(e.target.value); loadLog(e.target.value || undefined); }}>
           <option value="">All clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
       </div>
 
-      <div style={s.table}>
-        <div style={s.thead}>
+      <div style={styles.table}>
+        <div style={styles.thead}>
           <div style={{ flex: 1.5 }}>When</div>
           <div style={{ flex: 1 }}>User</div>
           <div style={{ flex: 1 }}>Client</div>
@@ -57,27 +57,27 @@ export default function AuditPage() {
           <div style={{ flex: 1 }}>IP Address</div>
         </div>
 
-        {loading && <div style={s.empty}>Loading audit log…</div>}
-        {!loading && log.length === 0 && <div style={s.empty}>No audit entries found.</div>}
+        {loading && <div style={styles.empty}>Loading audit log…</div>}
+        {!loading && log.length === 0 && <div style={styles.empty}>No audit entries found.</div>}
 
         {log.map(entry => {
           const badge = ACTION_BADGE[entry.action] || ACTION_BADGE.view;
           return (
-            <div key={entry.id} style={s.row}>
-              <div style={{ flex: 1.5, ...s.cell }}>
+            <div key={entry.id} style={styles.row}>
+              <div style={{ flex: 1.5, ...styles.cell }}>
                 {format(new Date(entry.created_at), 'MMM d, yyyy h:mm a')}
               </div>
-              <div style={{ flex: 1, ...s.cell }}>{entry.profiles?.full_name || '—'}</div>
-              <div style={{ flex: 1, ...s.cell }}>{entry.clients?.name || '—'}</div>
-              <div style={{ flex: 1, ...s.cell }}>
-                <span style={{ ...s.badge, background: badge.bg, color: badge.color }}>
+              <div style={{ flex: 1, ...styles.cell }}>{entry.profiles?.full_name || '—'}</div>
+              <div style={{ flex: 1, ...styles.cell }}>{entry.clients?.name || '—'}</div>
+              <div style={{ flex: 1, ...styles.cell }}>
+                <span style={{ ...styles.badge, background: badge.bg, color: badge.color }}>
                   {entry.action}
                 </span>
               </div>
-              <div style={{ flex: 2, ...s.cell, color: '#4A6070' }}>
+              <div style={{ flex: 2, ...styles.cell, color: '#4A6070' }}>
                 {entry.documents?.original_name || JSON.stringify(entry.metadata || '') || '—'}
               </div>
-              <div style={{ flex: 1, ...s.cell, fontFamily: 'monospace', fontSize: 11 }}>
+              <div style={{ flex: 1, ...styles.cell, fontFamily: 'monospace', fontSize: 11 }}>
                 {entry.ip_address || '—'}
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function AuditPage() {
   );
 }
 
-const s = {
+const styles = {
   page:   { padding: '24px 26px' },
   header: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 },
   title:  { fontSize: 18, fontWeight: 700, color: '#0D1B2A' },

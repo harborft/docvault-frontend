@@ -55,94 +55,94 @@ export default function ClientsPage() {
   }
 
   return (
-    <div style={s.page}>
-      <div style={s.header}>
-        <div style={s.title}>Clients</div>
-        <button style={s.btnDark} onClick={() => setShowForm(v => !v)}>
+    <div style={styles.page}>
+      <div style={styles.header}>
+        <div style={styles.title}>Clients</div>
+        <button style={styles.btnDark} onClick={() => setShowForm(v => !v)}>
           {showForm ? 'Cancel' : '+ New Client'}
         </button>
       </div>
 
       {showForm && (
-        <div style={s.formCard}>
-          <div style={s.formTitle}>Add New Client</div>
-          <form onSubmit={handleCreate} style={s.formGrid}>
+        <div style={styles.formCard}>
+          <div style={styles.formTitle}>Add New Client</div>
+          <form onSubmit={handleCreate} style={styles.formGrid}>
             <div>
-              <label style={s.label}>Company name *</label>
-              <input style={s.input} required placeholder="Acme Corp"
+              <label style={styles.label}>Company name *</label>
+              <input style={styles.input} required placeholder="Acme Corp"
                 value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
             </div>
             <div>
-              <label style={s.label}>Industry</label>
-              <input style={s.input} placeholder="e.g. Healthcare"
+              <label style={styles.label}>Industry</label>
+              <input style={styles.input} placeholder="e.g. Healthcare"
                 value={form.industry} onChange={e => setForm(f => ({ ...f, industry: e.target.value }))} />
             </div>
             <div>
-              <label style={s.label}>Email *</label>
-              <input style={s.input} type="email" required placeholder="contact@company.com"
+              <label style={styles.label}>Email *</label>
+              <input style={styles.input} type="email" required placeholder="contact@company.com"
                 value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
             </div>
             <div>
-              <label style={s.label}>Phone</label>
-              <input style={s.input} placeholder="(555) 000-0000"
+              <label style={styles.label}>Phone</label>
+              <input style={styles.input} placeholder="(555) 000-0000"
                 value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
-              <button style={s.btnGold} type="submit" disabled={saving}>
+              <button style={styles.btnGold} type="submit" disabled={saving}>
                 {saving ? 'Creating…' : 'Create Client + Default Folders'}
               </button>
-              <div style={s.hint}>Default folders (Bank Statements, Invoices, Tax Docs, Payroll, Contracts) are created automatically.</div>
+              <div style={styles.hint}>Default folders (Bank Statements, Invoices, Tax Docs, Payroll, Contracts) are created automatically.</div>
             </div>
           </form>
         </div>
       )}
 
       {loading ? (
-        <div style={s.empty}>Loading clients…</div>
+        <div style={styles.empty}>Loading clients…</div>
       ) : (
-        <div style={s.grid}>
+        <div style={styles.grid}>
           {clients.map((client, i) => {
             const col = COLORS[i % COLORS.length];
             return (
-              <div key={client.id} style={s.card}>
-                <div style={{ ...s.avatar, background: col.bg, color: col.color }}>
+              <div key={client.id} style={styles.card}>
+                <div style={{ ...styles.avatar, background: col.bg, color: col.color }}>
                   {client.name.slice(0, 2).toUpperCase()}
                 </div>
-                <div style={s.clientName}>{client.name}</div>
-                <div style={s.clientSub}>{client.industry || 'General'} · {client.email}</div>
+                <div style={styles.clientName}>{client.name}</div>
+                <div style={styles.clientSub}>{client.industry || 'General'} · {client.email}</div>
 
-                <div style={s.statsRow}>
-                  <div style={s.stat}>
-                    <div style={s.statVal}>{client.storage_used ? Math.round(client.storage_used / 1e6) : 0} MB</div>
-                    <div style={s.statLbl}>Storage</div>
+                <div style={styles.statsRow}>
+                  <div style={styles.stat}>
+                    <div style={styles.statVal}>{client.storage_used ? Math.round(client.storage_used / 1e6) : 0} MB</div>
+                    <div style={styles.statLbl}>Storage</div>
                   </div>
-                  <div style={s.stat}>
-                    <div style={{ ...s.statVal, color: client.portal_active ? '#27500A' : '#A32D2D' }}>
+                  <div style={styles.stat}>
+                    <div style={{ ...styles.statVal, color: client.portal_active ? '#27500A' : '#A32D2D' }}>
                       {client.portal_active ? 'Active' : 'Inactive'}
                     </div>
-                    <div style={s.statLbl}>Portal</div>
+                    <div style={styles.statLbl}>Portal</div>
                   </div>
                 </div>
 
-                <button style={s.inviteBtn} onClick={() => setShowInvite(client.id)}>
+                <button style={styles.inviteBtn} onClick={() => setShowInvite(client.id)}>
                   + Invite Portal User
                 </button>
 
                 {showInvite === client.id && (
-                  <div style={s.inviteForm}>
-                    <div style={s.formTitle}>Create portal login for {client.name}</div>
+                  <div style={styles.inviteForm}>
+                    <div style={styles.formTitle}>Create portal login for {client.name}</div>
                     <form onSubmit={handleInvite}>
-                      <input style={{ ...s.input, marginBottom: 8 }} type="email" required
+                      <input style={{ ...styles.input, marginBottom: 8 }} type="email" required
                         placeholder="Client email" value={inviteEmail}
                         onChange={e => setInviteEmail(e.target.value)} />
-                      <input style={{ ...s.input, marginBottom: 8 }} type="password" required
+                      <input style={{ ...styles.input, marginBottom: 8 }} type="password" required
                         placeholder="Set initial password (min 8 chars)" value={invitePwd}
                         onChange={e => setInvitePwd(e.target.value)} minLength={8} />
                       <div style={{ display: 'flex', gap: 8 }}>
-                        <button style={s.btnGold} type="submit" disabled={saving}>
+                        <button style={styles.btnGold} type="submit" disabled={saving}>
                           {saving ? '…' : 'Create & Send Invite'}
                         </button>
-                        <button style={s.btnCancel} type="button" onClick={() => setShowInvite(null)}>Cancel</button>
+                        <button style={styles.btnCancel} type="button" onClick={() => setShowInvite(null)}>Cancel</button>
                       </div>
                     </form>
                   </div>
@@ -151,7 +151,7 @@ export default function ClientsPage() {
             );
           })}
 
-          <div style={{ ...s.card, border: '2px dashed #CBD2DB', alignItems: 'center',
+          <div style={{ ...styles.card, border: '2px dashed #CBD2DB', alignItems: 'center',
                         justifyContent: 'center', cursor: 'pointer', minHeight: 140 }}
             onClick={() => setShowForm(true)}>
             <div style={{ fontSize: 24, color: '#CBD2DB' }}>+</div>
@@ -163,7 +163,7 @@ export default function ClientsPage() {
   );
 }
 
-const s = {
+const styles = {
   page:      { padding: '24px 26px' },
   header:    { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 },
   title:     { fontSize: 18, fontWeight: 700, color: '#0D1B2A' },

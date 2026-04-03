@@ -55,53 +55,53 @@ export default function ClientPortalPage() {
   }
 
   return (
-    <div style={p.page}>
+    <div style={styles.page}>
       {/* Hero bar */}
-      <div style={p.hero}>
+      <div style={styles.hero}>
         <div>
-          <div style={p.heroLogo}>DocVault</div>
-          <div style={p.heroName}>Welcome back, {client?.name || profile?.full_name}</div>
-          <div style={p.heroSub}>Your secure financial document portal</div>
+          <div style={styles.heroLogo}>DocVault</div>
+          <div style={styles.heroName}>Welcome back, {client?.name || profile?.full_name}</div>
+          <div style={styles.heroSub}>Your secure financial document portal</div>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <div style={p.pill2}><div style={p.pillVal}>{docs.length}</div><div style={p.pillLbl}>Docs uploaded</div></div>
-          <div style={p.pill2}><div style={{ ...p.pillVal, color: requests.length > 0 ? '#F09595' : '#E8C96A' }}>{requests.length}</div><div style={p.pillLbl}>Requests open</div></div>
-          <button onClick={signOut} style={p.signOutBtn}>Sign out</button>
+          <div style={styles.pill2}><div style={styles.pillVal}>{docs.length}</div><div style={styles.pillLbl}>Docs uploaded</div></div>
+          <div style={styles.pill2}><div style={{ ...styles.pillVal, color: requests.length > 0 ? '#F09595' : '#E8C96A' }}>{requests.length}</div><div style={styles.pillLbl}>Requests open</div></div>
+          <button onClick={signOut} style={styles.signOutBtn}>Sign out</button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div style={p.tabs}>
+      <div style={styles.tabs}>
         {[['upload','📤 Upload'], ['docs','📄 My Documents'], ['requests','📋 Requests' + (requests.length ? ` (${requests.length})` : '')]].map(([id, label]) => (
-          <div key={id} style={{ ...p.tab, ...(tab === id ? p.tabOn : {}) }} onClick={() => setTab(id)}>{label}</div>
+          <div key={id} style={{ ...styles.tab, ...(tab === id ? styles.tabOn : {}) }} onClick={() => setTab(id)}>{label}</div>
         ))}
       </div>
 
       {/* Upload tab */}
       {tab === 'upload' && (
-        <div style={p.content}>
-          <div style={p.section}>
+        <div style={styles.content}>
+          <div style={styles.section}>
             {folders.length > 0 && (
               <div style={{ marginBottom: 14 }}>
-                <label style={p.label}>Upload to folder</label>
-                <select style={p.select} value={selFolder || ''} onChange={e => setSelFolder(e.target.value || null)}>
+                <label style={styles.label}>Upload to folder</label>
+                <select style={styles.select} value={selFolder || ''} onChange={e => setSelFolder(e.target.value || null)}>
                   <option value="">General / Uncategorized</option>
                   {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
                 </select>
               </div>
             )}
-            <div {...getRootProps()} style={{ ...p.dropzone, ...(isDragActive ? p.dropActive : {}) }}>
+            <div {...getRootProps()} style={{ ...styles.dropzone, ...(isDragActive ? styles.dropActive : {}) }}>
               <input {...getInputProps()} />
               <div style={{ fontSize: 32, marginBottom: 10 }}>📤</div>
-              <div style={p.dzTitle}>{uploading ? 'Uploading…' : isDragActive ? 'Drop here!' : 'Upload for your CFO team'}</div>
-              <div style={p.dzHint}>Receipts, statements, invoices, payroll — any format accepted</div>
+              <div style={styles.dzTitle}>{uploading ? 'Uploading…' : isDragActive ? 'Drop here!' : 'Upload for your CFO team'}</div>
+              <div style={styles.dzHint}>Receipts, statements, invoices, payroll — any format accepted</div>
               <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 14 }}>
-                <button style={p.btnGold} disabled={uploading}>
+                <button style={styles.btnGold} disabled={uploading}>
                   {uploading ? 'Uploading…' : 'Choose Files'}
                 </button>
               </div>
             </div>
-            <div style={p.secNote}>
+            <div style={styles.secNote}>
               🔒 Your documents are encrypted and only accessible by your CFO team. Every access is logged.
             </div>
           </div>
@@ -110,29 +110,29 @@ export default function ClientPortalPage() {
 
       {/* Docs tab */}
       {tab === 'docs' && (
-        <div style={p.content}>
+        <div style={styles.content}>
           {docs.length === 0 ? (
-            <div style={p.empty}>No documents uploaded yet. Go to the Upload tab to get started.</div>
+            <div style={styles.empty}>No documents uploaded yet. Go to the Upload tab to get started.</div>
           ) : docs.map(doc => {
             const pill = STATUS_PILL[doc.status] || STATUS_PILL.pending;
             return (
-              <div key={doc.id} style={p.docRow}>
-                <div style={p.docIcon}>
+              <div key={doc.id} style={styles.docRow}>
+                <div style={styles.docIcon}>
                   {doc.file_type === 'pdf' ? '📄' : doc.file_type?.includes('xl') ? '📊' : '🖼'}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={p.docName}>{doc.original_name}</div>
-                  <div style={p.docInfo}>
+                  <div style={styles.docName}>{doc.original_name}</div>
+                  <div style={styles.docInfo}>
                     {doc.folders?.name && <>{doc.folders.name} · </>}
                     {Math.round(doc.file_size / 1024)} KB ·{' '}
                     {formatDistanceToNow(new Date(doc.created_at), { addSuffix: true })}
                   </div>
                   {doc.review_note && (
-                    <div style={p.reviewNote}>💬 {doc.review_note}</div>
+                    <div style={styles.reviewNote}>💬 {doc.review_note}</div>
                   )}
                 </div>
-                <span style={{ ...p.statusPill, background: pill.bg, color: pill.color }}>{pill.label}</span>
-                <button style={p.dlBtn} onClick={() => handleDownload(doc)} title="Download">⬇</button>
+                <span style={{ ...styles.statusPill, background: pill.bg, color: pill.color }}>{pill.label}</span>
+                <button style={styles.dlBtn} onClick={() => handleDownload(doc)} title="Download">⬇</button>
               </div>
             );
           })}
@@ -141,20 +141,20 @@ export default function ClientPortalPage() {
 
       {/* Requests tab */}
       {tab === 'requests' && (
-        <div style={p.content}>
+        <div style={styles.content}>
           {requests.length === 0 ? (
-            <div style={p.empty}>🎉 No open requests — you're all caught up!</div>
+            <div style={styles.empty}>🎉 No open requests — you're all caught up!</div>
           ) : requests.map(req => (
-            <div key={req.id} style={p.reqCard}>
+            <div key={req.id} style={styles.reqCard}>
               <div style={{ fontSize: 20, flexShrink: 0 }}>📋</div>
               <div style={{ flex: 1 }}>
-                <div style={p.reqTitle}>{req.title}</div>
-                {req.description && <div style={p.reqDesc}>{req.description}</div>}
-                <div style={p.reqMeta}>
+                <div style={styles.reqTitle}>{req.title}</div>
+                {req.description && <div style={styles.reqDesc}>{req.description}</div>}
+                <div style={styles.reqMeta}>
                   Requested by your CFO team{req.due_date ? ` · Due ${req.due_date}` : ''}
                 </div>
               </div>
-              <button style={p.btnGold} onClick={() => setTab('upload')}>Upload</button>
+              <button style={styles.btnGold} onClick={() => setTab('upload')}>Upload</button>
             </div>
           ))}
         </div>
@@ -163,7 +163,7 @@ export default function ClientPortalPage() {
   );
 }
 
-const p = {
+const styles = {
   page:      { fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: '#F2F4F7' },
   hero:      { background: '#0D1B2A', padding: '20px 28px', display: 'flex',
                alignItems: 'center', justifyContent: 'space-between' },
