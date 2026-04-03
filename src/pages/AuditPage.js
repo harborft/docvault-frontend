@@ -15,7 +15,6 @@ export default function AuditPage() {
   const [log,     setLog]     = useState([]);
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
-  const [filter,  setFilter]  = useState('');
 
   useEffect(() => {
     api.listClients().then(d => setClients(d.clients || []));
@@ -41,7 +40,7 @@ export default function AuditPage() {
           <div style={styles.sub}>Every upload, view, download, and approval — permanently recorded.</div>
         </div>
         <select style={styles.select}
-          onChange={e => { setFilter(e.target.value); loadLog(e.target.value || undefined); }}>
+          onChange={e => loadLog(e.target.value || undefined)}>
           <option value="">All clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>

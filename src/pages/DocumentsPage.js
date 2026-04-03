@@ -24,22 +24,7 @@ export default function DocumentsPage() {
   const [uploading,     setUploading]     = useState(false);
   const [loading,       setLoading]       = useState(true);
 
-  useEffect(() => {
-    if (isAdmin) api.listClients().then(d => setClients(d.clients || []));
-    loadDocuments();
-  }, []);
-
-  useEffect(() => {
-    if (selectedClient) {
-      api.listFolders(selectedClient).then(d => setFolders(d.folders || []));
-    } else {
-      setFolders([]);
-      setSelectedFolder(null);
-    }
-    loadDocuments();
-  }, [selectedClient, selectedFolder, statusFilter]);
-
-  async function loadDocuments() {
+  const loadDocuments = useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -53,7 +38,21 @@ export default function DocumentsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [selectedClient, selectedFolder, statusFilter]);
+
+  useEffect(() => {
+    if (isAdmin) api.listClients().then(d => setClients(d.clients || []));
+    loadDocuments();
+  }, [isAdmin, loadDocuments]);
+
+  useEffect(() => {
+    if (selectedClient) {
+      api.listFolders(selectedClient).then(d => setFolders(d.folders || []));
+    } else {
+      setFolders([]);
+      setSelectedFolder(null);
+    }
+  }, [selectedClient]);
 
   const onDrop = useCallback(async (acceptedFiles) => {
     if (!selectedClient && isAdmin) {
@@ -71,7 +70,7 @@ export default function DocumentsPage() {
     } finally {
       setUploading(false);
     }
-  }, [selectedClient, selectedFolder]);
+  }, [selectedClient, selectedFolder, isAdmin, loadDocuments]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
